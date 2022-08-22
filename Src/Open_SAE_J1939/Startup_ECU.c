@@ -58,8 +58,8 @@ static bool HardCodeStruct(Information_this_ECU *information_this_ECU) {
     information_this_ECU->this_name.from_ecu_address = information_this_ECU->this_ECU_address;
 
 
-    information_this_ECU->this_identifications.software_identification.number_of_fields = 1;
-    information_this_ECU->this_identifications.software_identification.identifications[0] = 1;
+    information_this_ECU->this_identifications.software_identification.number_of_fields = 6;
+    memcpy(information_this_ECU->this_identifications.software_identification.identifications, "v1.0", sizeof("v1.0"));
     information_this_ECU->this_identifications.software_identification.from_ecu_address = information_this_ECU->this_ECU_address;
 
     information_this_ECU->this_identifications.component_identification.length_of_each_field = 10;
@@ -69,6 +69,16 @@ static bool HardCodeStruct(Information_this_ECU *information_this_ECU) {
     memcpy(information_this_ECU->this_identifications.component_identification.component_unit_name, "001", sizeof("001"));
     information_this_ECU->this_identifications.component_identification.from_ecu_address = information_this_ECU->this_ECU_address;
 
-
+    information_this_ECU->this_identifications.ecu_identification.length_of_each_field = 30;
+	char ecu_part_number[20] = "ABC-1100P-XXXX10";
+	char ecu_serial_number[20] = "1-200-K-10M";
+	char ecu_location[20] = "Under bridge";
+	char ecu_type[20] = "Model G";
+	for(uint8_t i = 0; i < 20; i++){
+		information_this_ECU->this_identifications.ecu_identification.ecu_part_number[i] = (uint8_t) ecu_part_number[i];
+		information_this_ECU->this_identifications.ecu_identification.ecu_serial_number[i] = (uint8_t) ecu_serial_number[i];
+		information_this_ECU->this_identifications.ecu_identification.ecu_location[i] = (uint8_t) ecu_location[i];
+		information_this_ECU->this_identifications.ecu_identification.ecu_type[i] = (uint8_t) ecu_type[i];
+	}
     return true;
 }
