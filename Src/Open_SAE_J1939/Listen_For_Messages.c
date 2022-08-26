@@ -83,7 +83,7 @@ bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
         else if (id0 == 0x0 && id1 == 0x2 && (DA == j1939->information_this_ECU.this_ECU_address || DA == 0xFF))
             SAE_J1939_Read_Address_Delete(j1939, data);                                                         /* Not a SAE J1939 standard */
         else {
-            uint32_t PGN = (uint16_t) (id1 << 4) || DA;
+            uint32_t PGN = (uint16_t) (id1 << 8) | DA;
             for (pgn_list_t pgn_index = 0; pgn_index < PGN_QTY; pgn_index++) {
                 if (pgn_value[pgn_index] == PGN) {
                     if (callback_list[pgn_index] != NULL) {
