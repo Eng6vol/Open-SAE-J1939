@@ -16,7 +16,7 @@
  * PGN: 0x00C600 (50688)
  */
 ENUM_J1939_STATUS_CODES ISO_11783_Send_Request_General_Purpose_Valve_Estimated_Flow(J1939 *j1939, uint8_t DA) {
-	return SAE_J1939_Send_Request(j1939, DA, PGN_GENERAL_PURPOSE_VALVE_ESTIMATED_FLOW);
+	return SAE_J1939_Send_Request(j1939, DA, pgn_value[PGN_GENERAL_PURPOSE_VALVE_ESTIMATED_FLOW]);
 }
 
 /*

@@ -20,7 +20,7 @@ ENUM_J1939_STATUS_CODES SAE_J1939_Send_Request_Address_Claimed(J1939 *j1939, uin
 	memset(j1939->other_ECU_address, 0xFF, 0xFF);
 	j1939->number_of_cannot_claim_address = 0;
 	j1939->number_of_other_ECU = 0;
-	return SAE_J1939_Send_Request(j1939, DA, PGN_ADDRESS_CLAIMED);
+	return SAE_J1939_Send_Request(j1939, DA, pgn_value[PGN_ADDRESS_CLAIMED]);
 }
 
 /*

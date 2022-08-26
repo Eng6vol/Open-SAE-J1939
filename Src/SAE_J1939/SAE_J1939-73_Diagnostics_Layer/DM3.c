@@ -15,7 +15,7 @@
  * PGN: 0x00FECC (65228)
  */
 ENUM_J1939_STATUS_CODES SAE_J1939_Send_Request_DM3(J1939 *j1939, uint8_t DA) {
-	return SAE_J1939_Send_Request(j1939, DA, PGN_DM3);
+	return SAE_J1939_Send_Request(j1939, DA, pgn_value[PGN_DM3]);
 }
 
 /*

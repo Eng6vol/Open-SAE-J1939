@@ -16,7 +16,7 @@
  * PGN: 0x00FECB (65227)
  */
 ENUM_J1939_STATUS_CODES SAE_J1939_Send_Request_DM2(J1939 *j1939, uint8_t DA) {
-	return SAE_J1939_Send_Request(j1939, DA, PGN_DM2);
+	return SAE_J1939_Send_Request(j1939, DA, pgn_value[PGN_DM2]);
 }
 
 /*
@@ -51,7 +51,7 @@ ENUM_J1939_STATUS_CODES SAE_J1939_Response_Request_DM2(J1939 *j1939, uint8_t DA)
 		j1939->this_ecu_tp_dt.data[8] = j1939->this_dm.errors_dm2_active;
 
 		/* Send TP CM */
-		j1939->this_ecu_tp_cm.PGN_of_the_packeted_message = PGN_DM2;
+		j1939->this_ecu_tp_cm.PGN_of_the_packeted_message = pgn_value[PGN_DM2];
 		j1939->this_ecu_tp_cm.control_byte = DA == 0xFF ? CONTROL_BYTE_TP_CM_BAM : CONTROL_BYTE_TP_CM_RTS; /* If broadcast, then use BAM control byte */
 		ENUM_J1939_STATUS_CODES status = SAE_J1939_Send_Transport_Protocol_Connection_Management(j1939, DA);
 		if(status != STATUS_SEND_OK)
