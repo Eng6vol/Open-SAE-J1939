@@ -21,7 +21,7 @@
 extern "C" {
 #endif
 
-void Open_SAE_J1939_ConfigCallback(SAE_Callback callback, void *context, pgn_list_t pgn);
+void Open_SAE_J1939_ConfigCallback(OPEN_SAE_Callback callback, void *context, pgn_list_t pgn);
 
 /* This functions must be called all the time, or be placed inside an interrupt listener */
 bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939);

@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef void (*SAE_Callback)(void *);
+typedef void (*OPEN_SAE_Callback)(void *);
 
 /* This text name follows 8.3 filename standard - Important if you want to save to SD card */
 #define INFORMATION_THIS_ECU "ECUINFO.TXT"

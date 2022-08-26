@@ -10,10 +10,10 @@
 /* Layers */
 #include "../ISO_11783/ISO_11783-7_Application_Layer/Application_Layer.h"
 #include "../Hardware/Hardware.h"
-static SAE_Callback callback_list[PGN_QTY] = {NULL};
+static OPEN_SAE_Callback callback_list[PGN_QTY] = {NULL};
 static void *context_list[PGN_QTY] = {0};
 
-void Open_SAE_J1939_ConfigCallback(SAE_Callback callback, void *context, pgn_list_t pgn) {
+void Open_SAE_J1939_ConfigCallback(OPEN_SAE_Callback callback, void *context, pgn_list_t pgn) {
     callback_list[pgn] = callback;
     context_list[pgn] = context;
 }
