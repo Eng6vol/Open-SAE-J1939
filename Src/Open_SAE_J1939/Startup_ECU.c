@@ -7,6 +7,9 @@
 
 #include "Open_SAE_J1939.h"
 #include "string.h"
+#include "parameter.h"
+#include "BOARD/communication_handler.h"
+#include <xc.h>
 
 /* Layers */
 #include "../Hardware/Hardware.h"
@@ -44,7 +47,9 @@ bool Open_SAE_J1939_Startup_ECU(J1939 *j1939) {
 }
 
 static bool HardCodeStruct(Information_this_ECU *information_this_ECU) {
-    information_this_ECU->this_ECU_address = 0x51;
+    uint32_t id[4] = {DEVSN0, DEVSN1, DEVSN2, DEVSN3};
+
+    information_this_ECU->this_ECU_address = (uint8_t) CalculateCRC((uint8_t *) id, sizeof(id));
     /* This is the hard coded struct */
     information_this_ECU->this_name.identity_number = information_this_ECU->this_ECU_address;
     information_this_ECU->this_name.manufacturer_code = 10;
@@ -70,15 +75,15 @@ static bool HardCodeStruct(Information_this_ECU *information_this_ECU) {
     information_this_ECU->this_identifications.component_identification.from_ecu_address = information_this_ECU->this_ECU_address;
 
     information_this_ECU->this_identifications.ecu_identification.length_of_each_field = 30;
-	char ecu_part_number[20] = "ABC-1100P-XXXX10";
-	char ecu_serial_number[20] = "1-200-K-10M";
-	char ecu_location[20] = "Under bridge";
-	char ecu_type[20] = "Model G";
-	for(uint8_t i = 0; i < 20; i++){
-		information_this_ECU->this_identifications.ecu_identification.ecu_part_number[i] = (uint8_t) ecu_part_number[i];
-		information_this_ECU->this_identifications.ecu_identification.ecu_serial_number[i] = (uint8_t) ecu_serial_number[i];
-		information_this_ECU->this_identifications.ecu_identification.ecu_location[i] = (uint8_t) ecu_location[i];
-		information_this_ECU->this_identifications.ecu_identification.ecu_type[i] = (uint8_t) ecu_type[i];
-	}
+    char ecu_part_number[20] = "ABC-1100P-XXXX10";
+    char ecu_serial_number[20] = "1-200-K-10M";
+    char ecu_location[20] = "Under bridge";
+    char ecu_type[20] = "Model G";
+    for (uint8_t i = 0; i < 20; i++) {
+        information_this_ECU->this_identifications.ecu_identification.ecu_part_number[i] = (uint8_t) ecu_part_number[i];
+        information_this_ECU->this_identifications.ecu_identification.ecu_serial_number[i] = (uint8_t) ecu_serial_number[i];
+        information_this_ECU->this_identifications.ecu_identification.ecu_location[i] = (uint8_t) ecu_location[i];
+        information_this_ECU->this_identifications.ecu_identification.ecu_type[i] = (uint8_t) ecu_type[i];
+    }
     return true;
 }
