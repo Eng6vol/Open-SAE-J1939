@@ -101,12 +101,12 @@ ENUM_J1939_STATUS_CODES CAN_Send_Message(uint32_t ID, uint8_t data[]) {
         CAN2_CallbackRegister(CAN_callback, (uintptr_t) CAN_transmit_semaphore, CAN_FIFO_NUMBER_TRANSMIT);
     }
     if (CAN2_MessageTransmit(ID, 8, data, CAN_FIFO_NUMBER_TRANSMIT, CAN_MSG_TX_DATA_FRAME) == false) {
-        vTaskDelay(pdMS_TO_TICKS(10));
+        // vTaskDelay(pdMS_TO_TICKS(10));
         status = STATUS_SEND_BUSY;
 	 
     }
     else {
-        if(xSemaphoreTake(CAN_transmit_semaphore, pdMS_TO_TICKS(10)) == pdTRUE) {
+        if(xSemaphoreTake(CAN_transmit_semaphore, pdMS_TO_TICKS(25)) == pdTRUE) {
             status = STATUS_SEND_OK;
         }
         else {
