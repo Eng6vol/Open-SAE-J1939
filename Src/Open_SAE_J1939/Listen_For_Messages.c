@@ -10,6 +10,8 @@
 /* Layers */
 #include "../ISO_11783/ISO_11783-7_Application_Layer/Application_Layer.h"
 #include "../Hardware/Hardware.h"
+#include "BOARD/parameter.h"
+
 static OPEN_SAE_Callback callback_list[PGN_QTY] = {NULL};
 static void *context_list[PGN_QTY] = {0};
 
@@ -82,10 +84,15 @@ bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
             ISO_11783_Read_General_Purpose_Valve_Command(j1939, SA, data);                                      /* General Purpose Valve Command have only one valve */
         else if (id0 == 0x0 && id1 == 0x2 && (DA == j1939->information_this_ECU.this_ECU_address || DA == 0xFF))
             SAE_J1939_Read_Address_Delete(j1939, data);                                                         /* Not a SAE J1939 standard */
+        else if ((pgn_value[PGN_VOLTU_PROPIETARY_B_DASHBOARD_CMD] + PARAMETER_GetValue(PARAMETER_ICU_TYPE)) == ((uint16_t) (id1 << 8) | DA)) {
+            if (callback_list[PGN_VOLTU_PROPIETARY_B_DASHBOARD_CMD] != NULL) {
+                callback_list[PGN_VOLTU_PROPIETARY_B_DASHBOARD_CMD](context_list[PGN_VOLTU_PROPIETARY_B_DASHBOARD_CMD]);
+            }
+        }
         else {
             uint32_t PGN = (uint16_t) (id1 << 8) | DA;
             for (pgn_list_t pgn_index = 0; pgn_index < PGN_QTY; pgn_index++) {
-                if (pgn_value[pgn_index] == PGN) {
+                if (pgn_value[pgn_index] == PGN && (PGN_VOLTU_PROPIETARY_B_DASHBOARD_CMD != pgn_index)) {
                     if (callback_list[pgn_index] != NULL) {
                         callback_list[pgn_index](context_list[pgn_index]);
                     }
