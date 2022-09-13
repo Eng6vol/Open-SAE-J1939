@@ -96,7 +96,7 @@ ENUM_J1939_STATUS_CODES CAN_Send_Message(uint32_t ID, uint8_t data[]) {
     /* Implement your CAN send 8 bytes message function for the PIC platform */
     static SemaphoreHandle_t CAN_transmit_semaphore = NULL;
     if (CAN_transmit_semaphore == NULL) {
-        CAN_transmit_semaphore = xSemaphoreCreateBinary();
+        CAN_transmit_semaphore = xSemaphoreCreateCounting(32,32); //32 buffers on CAN_FIFO_NUMBER_TRANSMIT, If count == 0 there is no buffers availables
         configASSERT(CAN_transmit_semaphore != NULL);
         CAN2_CallbackRegister(CAN_callback, (uintptr_t) CAN_transmit_semaphore, CAN_FIFO_NUMBER_TRANSMIT);
     }
