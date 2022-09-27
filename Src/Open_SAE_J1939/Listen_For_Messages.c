@@ -38,10 +38,12 @@ bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
     if (is_new_message) {
         /* Save latest */
         if ((ID == asked_id) && id_asked_flag) {
-            char str[150];
-            sprintf(str, "%.8X", ID);
-            for (uint8_t i; i < 8; i++) {
-                sprintf(str, "%s %.2X", str, (uint8_t)data[i]);
+            char str[150] = {0};
+            sprintf(str, "%.8X ", ID);
+            for (uint8_t i = 0; i < 8; i++) {
+                char data_i[8];
+                sprintf(data_i, "%.2X ", (uint8_t)data[i]);
+                strcat(str, data_i);
             }
             COMMUNICATION_PC_WriteL(str);
             id_asked_flag--;
