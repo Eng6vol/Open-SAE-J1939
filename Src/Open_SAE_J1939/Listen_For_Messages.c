@@ -15,11 +15,21 @@
 static OPEN_SAE_Callback callback_list[PGN_QTY] = {NULL};
 static void *context_list[PGN_QTY] = {0};
 
+static uint32_t asked_id;
+static uint8_t id_asked_flag = 0;
+
 void Open_SAE_J1939_ConfigCallback(OPEN_SAE_Callback callback, void *context, pgn_list_t pgn) {
     callback_list[pgn] = callback;
     context_list[pgn] = context;
 }
 
+void Open_SAE_J1939_ReadID(uint32_t id, uint8_t times) {
+    asked_id = id;
+    id_asked_flag = times;
+}
+
+#include "BOARD/communication_pc.h"
+#include <stdio.h>
 /* This function should be called all the time, or be placed inside an interrupt listener */
 bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
     uint32_t ID = 0;
@@ -27,6 +37,16 @@ bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
     bool is_new_message = CAN_Read_Message(&ID, data);
     if (is_new_message) {
         /* Save latest */
+        if ((ID == asked_id) && id_asked_flag) {
+            char str[150];
+            sprintf(str, "%.8X", ID);
+            for (uint8_t i; i < 8; i++) {
+                sprintf(str, "%s %.2X", str, (uint8_t)data[i]);
+            }
+            COMMUNICATION_PC_WriteL(str);
+            id_asked_flag--;
+            asked_id = 0;
+        }
         j1939->ID = ID;
         memcpy(j1939->data, data, 8);
         j1939->ID_and_data_is_updated = true;
