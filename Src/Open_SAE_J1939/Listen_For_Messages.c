@@ -47,7 +47,7 @@ bool Open_SAE_J1939_Listen_For_Messages(J1939 *j1939) {
             }
             COMMUNICATION_PC_WriteL(str);
             id_asked_flag--;
-            asked_id = 0;
+            // asked_id = 0;
         }
         j1939->ID = ID;
         memcpy(j1939->data, data, 8);
